@@ -6,6 +6,7 @@ import { ud2x18 } from "@prb/math/src/UD2x18.sol";
 import { ud60x18 } from "@prb/math/src/UD60x18.sol";
 import { ISablierV2LockupDynamic } from "@sablier/v2-core/src/interfaces/ISablierV2LockupDynamic.sol";
 import { Broker, LockupDynamic } from "@sablier/v2-core/src/types/DataTypes.sol";
+import { console2 } from "forge-std/src/console2.sol";
 
 /// @notice Examples of how to create Lockup Dynamic streams with different curve shapes.
 /// @dev A visualization of the curve shapes can be found in the docs:
@@ -43,8 +44,16 @@ contract LockupDynamicCurvesCreator {
         params.segments[0] =
             LockupDynamic.SegmentWithDelta({ amount: uint128(totalAmount), delta: 100 days, exponent: ud2x18(6e18) });
 
-        // Create the LockupDynamic stream
+        // Create the LockupDynamic stream and log the gas used
+        uint256 beforeGas = gasleft();
         streamId = LOCKUP_DYNAMIC.createWithDeltas(params);
+        uint256 afterGas = gasleft();
+
+        console2.log(
+            "Gas used: %d for Exponential shape with segments length: %d",
+            beforeGas - afterGas,
+            LOCKUP_DYNAMIC.getSegments(streamId).length
+        );
     }
 
     function createStream_ExponentialCliff() external returns (uint256 streamId) {
@@ -75,8 +84,16 @@ contract LockupDynamicCurvesCreator {
         params.segments[1] = LockupDynamic.SegmentWithDelta({ amount: 20e18, delta: 1 seconds, exponent: ud2x18(1e18) });
         params.segments[2] = LockupDynamic.SegmentWithDelta({ amount: 80e18, delta: 50 days, exponent: ud2x18(6e18) });
 
-        // Create the LockupDynamic stream
+        // Create the LockupDynamic stream and log the gas used
+        uint256 beforeGas = gasleft();
         streamId = LOCKUP_DYNAMIC.createWithDeltas(params);
+        uint256 afterGas = gasleft();
+
+        console2.log(
+            "Gas used: %d for ExponentialCliff shape with segments length: %d",
+            beforeGas - afterGas,
+            LOCKUP_DYNAMIC.getSegments(streamId).length
+        );
     }
 
     function createStream_UnlockInSteps() external returns (uint256 streamId) {
@@ -117,8 +134,16 @@ contract LockupDynamicCurvesCreator {
                 LockupDynamic.SegmentWithDelta({ amount: unlockAmount, delta: 1 seconds, exponent: ud2x18(1e18) });
         }
 
-        // Create the LockupDynamic stream
+        // Create the LockupDynamic stream and log the gas used
+        uint256 beforeGas = gasleft();
         streamId = LOCKUP_DYNAMIC.createWithDeltas(params);
+        uint256 afterGas = gasleft();
+
+        console2.log(
+            "Gas used: %d for UnlockInSteps shape with segments length: %d",
+            beforeGas - afterGas,
+            LOCKUP_DYNAMIC.getSegments(streamId).length
+        );
     }
 
     function createStream_MonthlyUnlocks() external returns (uint256 streamId) {
@@ -159,8 +184,16 @@ contract LockupDynamicCurvesCreator {
                 LockupDynamic.SegmentWithDelta({ amount: unlockAmount, delta: 1 seconds, exponent: ud2x18(1e18) });
         }
 
-        // Create the LockupDynamic stream
+        // Create the LockupDynamic stream and log the gas used
+        uint256 beforeGas = gasleft();
         streamId = LOCKUP_DYNAMIC.createWithDeltas(params);
+        uint256 afterGas = gasleft();
+
+        console2.log(
+            "Gas used: %d for MonthlyUnlocks shape with segments length: %d",
+            beforeGas - afterGas,
+            LOCKUP_DYNAMIC.getSegments(streamId).length
+        );
     }
 
     function createStream_Timelock() external returns (uint256 streamId) {
@@ -191,8 +224,16 @@ contract LockupDynamicCurvesCreator {
         params.segments[1] =
             LockupDynamic.SegmentWithDelta({ amount: 100e18, delta: 1 seconds, exponent: ud2x18(1e18) });
 
-        // Create the LockupDynamic stream
+        // Create the LockupDynamic stream and log the gas used
+        uint256 beforeGas = gasleft();
         streamId = LOCKUP_DYNAMIC.createWithDeltas(params);
+        uint256 afterGas = gasleft();
+
+        console2.log(
+            "Gas used: %d for Timelock shape with segments length: %d",
+            beforeGas - afterGas,
+            LOCKUP_DYNAMIC.getSegments(streamId).length
+        );
     }
 
     function createStream_UnlockLinear() external returns (uint256 streamId) {
@@ -222,8 +263,16 @@ contract LockupDynamicCurvesCreator {
         params.segments[1] =
             LockupDynamic.SegmentWithDelta({ amount: 75e18, delta: 100 days - 1 days, exponent: ud2x18(1e18) });
 
-        // Create the LockupDynamic stream
+        // Create the LockupDynamic stream and log the gas used
+        uint256 beforeGas = gasleft();
         streamId = LOCKUP_DYNAMIC.createWithDeltas(params);
+        uint256 afterGas = gasleft();
+
+        console2.log(
+            "Gas used: %d for UnlockLinear shape with segments length: %d",
+            beforeGas - afterGas,
+            LOCKUP_DYNAMIC.getSegments(streamId).length
+        );
     }
 
     function createStream_UnlockCliffLinear() external returns (uint256 streamId) {
@@ -255,7 +304,15 @@ contract LockupDynamicCurvesCreator {
         params.segments[2] = LockupDynamic.SegmentWithDelta({ amount: 25e18, delta: 1 seconds, exponent: ud2x18(1e18) });
         params.segments[3] = LockupDynamic.SegmentWithDelta({ amount: 50e18, delta: 50 days, exponent: ud2x18(1e18) });
 
-        // Create the LockupDynamic stream
+        // Create the LockupDynamic stream and log the gas used
+        uint256 beforeGas = gasleft();
         streamId = LOCKUP_DYNAMIC.createWithDeltas(params);
+        uint256 afterGas = gasleft();
+
+        console2.log(
+            "Gas used: %d for UnlockCliffLinear shape with segments length: %d",
+            beforeGas - afterGas,
+            LOCKUP_DYNAMIC.getSegments(streamId).length
+        );
     }
 }

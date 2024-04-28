@@ -5,6 +5,7 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { ud60x18 } from "@prb/math/src/UD60x18.sol";
 import { ISablierV2LockupLinear } from "@sablier/v2-core/src/interfaces/ISablierV2LockupLinear.sol";
 import { Broker, LockupLinear } from "@sablier/v2-core/src/types/DataTypes.sol";
+import { console2 } from "forge-std/src/console2.sol";
 
 /// @notice Example of how to create a Lockup Linear stream.
 /// @dev This code is referenced in the docs: https://docs.sablier.com/contracts/v2/guides/create-stream/lockup-linear
@@ -37,6 +38,10 @@ contract LockupLinearStreamCreator {
         params.broker = Broker(address(0), ud60x18(0)); // Optional parameter for charging a fee
 
         // Create the LockupLinear stream using a function that sets the start time to `block.timestamp`
+        uint256 beforeGas = gasleft();
         streamId = LOCKUP_LINEAR.createWithDurations(params);
+        uint256 afterGas = gasleft();
+
+        console2.log("Gas used: %d for a simple linear stream.", beforeGas - afterGas);
     }
 }
